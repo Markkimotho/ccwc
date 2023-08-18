@@ -6,103 +6,6 @@
 #define BUFFER_SIZE 100
 
 /**
- * print_usage - Prints usage information and available options to the console
- * 
- * Return: None
- */
-
-void print_usage(char *program_name)
-{
-        printf("Usage: %s [OPTION] [FILE]\n", program_name);
-        printf("Options:\n");
-        printf("	-c	Count the number of bytes\n");
-        printf("	-l	Count the number of lines\n");
-        printf("	-w	Count the number of words\n");
-        printf("	-m	Count the number of characters (including multibyte characters)\n");
-        printf("Default: %s -c -l -w [FILE]\n", program_name);
-}
-
-/**
- * count_bytes - Counts the number of bytes in a file
- * @file: Pointer to FILE
- *
- * Return: Number of bytes in a file
- */
-
-long int count_bytes(FILE *file)
-{
-        long int count = 0;
-        fseek(file, 0, SEEK_END);
-        count = ftell(file);
-        fseek(file, 0, SEEK_SET);
-        return count;
-}
-
-/**
- * count_lines - Counts the number of lines in a file
- * @file: Pointer to FILE
- *
- * Return: Number of lines in a file
- */
-
-int count_lines(FILE *file)
-{
-        int count = 0;
-        int ch;
-        while ((ch = fgetc(file)) != EOF)
-        {
-                if (ch == '\n')
-                        count++;
-        }
-        return (count);
-}
-
-/**
- * count_words - Counts the number of words in a file
- * @file: Pointer to FILE
- *
- * Return: Number of words in a file
- */
-
-int count_words(FILE *file)
-{
-        int count = 0;
-        int ch;
-        int in_word = 0;
-        while ((ch = fgetc(file)) != EOF)
-        {
-                if (ch == ' ' || ch == '\n' || ch == '\t')
-                        in_word = 0;
-                else if (!in_word)
-                {
-                        in_word = 1;
-                        count++;
-                }
-        }
-
-        return (count);
-}
-
-/**
- * count_characters - Counts the number of characters in a file
- * @file: Pointer to FILE
- *
- * Return: Number of characters in a file
- */
-
-long int count_characters(FILE *file)
-{
-        long int count = 0;
-        int ch;
-        while ((ch = fgetc(file)) != EOF)
-        {
-                if (ch != '\n')
-                        count++;
-        }
-        return (count);
-}
-
-/**
  * main - Reads a file, provides the byte, character, word, and line counts
  * @argc: Number of command line arguments
  * @argv: An array that stores the command line arguments
@@ -199,3 +102,103 @@ int main(int argc, char *argv[])
 
         return 0;
 }
+
+
+/**
+ * print_usage - Prints usage information and available options to the console
+ * 
+ * Return: None
+ */
+
+void print_usage(char *program_name)
+{
+        printf("Usage: %s [OPTION] [FILE]\n", program_name);
+        printf("Options:\n");
+        printf("	-c	Count the number of bytes\n");
+        printf("	-l	Count the number of lines\n");
+        printf("	-w	Count the number of words\n");
+        printf("	-m	Count the number of characters (including multibyte characters)\n");
+        printf("Default: %s -c -l -w [FILE]\n", program_name);
+}
+
+/**
+ * count_bytes - Counts the number of bytes in a file
+ * @file: Pointer to FILE
+ *
+ * Return: Number of bytes in a file
+ */
+
+long int count_bytes(FILE *file)
+{
+        long int count = 0;
+        fseek(file, 0, SEEK_END);
+        count = ftell(file);
+        fseek(file, 0, SEEK_SET);
+        return count;
+}
+
+/**
+ * count_lines - Counts the number of lines in a file
+ * @file: Pointer to FILE
+ *
+ * Return: Number of lines in a file
+ */
+
+int count_lines(FILE *file)
+{
+        int count = 0;
+        int ch;
+        while ((ch = fgetc(file)) != EOF)
+        {
+                if (ch == '\n')
+                        count++;
+        }
+        return (count);
+}
+
+/**
+ * count_words - Counts the number of words in a file
+ * @file: Pointer to FILE
+ *
+ * Return: Number of words in a file
+ */
+
+int count_words(FILE *file)
+{
+        int count = 0;
+        int ch;
+        int in_word = 0;
+        while ((ch = fgetc(file)) != EOF)
+        {
+                if (ch == ' ' || ch == '\n' || ch == '\t')
+                        in_word = 0;
+                else if (!in_word)
+                {
+                        in_word = 1;
+                        count++;
+                }
+        }
+
+        return (count);
+}
+
+/**
+ * count_characters - Counts the number of characters in a file
+ * @file: Pointer to FILE
+ *
+ * Return: Number of characters in a file
+ */
+
+long int count_characters(FILE *file)
+{
+        long int count = 0;
+        int ch;
+        while ((ch = fgetc(file)) != EOF)
+        {
+                if (ch != '\n')
+                        count++;
+        }
+        return (count);
+}
+
+
