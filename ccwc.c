@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <wchar.h>
-
-#define BUFFER_SIZE 100
+#include "ccwc.h"
 
 /**
  * main - Reads a file, provides the byte, character, word, and line counts
@@ -17,7 +12,7 @@
 int main(int argc, char *argv[])
 {
         if (argc < 2 || argc > 3)
-        {
+        {       
                 print_usage(argv[0]);
                 return 1;
         }
@@ -106,7 +101,8 @@ int main(int argc, char *argv[])
 
 /**
  * print_usage - Prints usage information and available options to the console
- * 
+ * @program_name: The command used to execute the program 
+ *
  * Return: None
  */
 
