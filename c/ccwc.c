@@ -114,7 +114,7 @@ void print_usage(char *program_name)
         printf("	-l	Count the number of lines\n");
         printf("	-w	Count the number of words\n");
         printf("	-m	Count the number of characters (including multibyte characters)\n");
-        printf("Default: %s -c -l -w [FILE]\n", program_name);
+        printf("Default: %s [FILE]\n", program_name);
 }
 
 /**

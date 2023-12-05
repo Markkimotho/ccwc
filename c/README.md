@@ -11,12 +11,12 @@ Usage: `ccwc [OPTION] [FILE]`
 
 Options:
 
-- `c` Count the number of bytes
+- `c`	Count the number of bytes
 - `l` Count the number of lines
 - `w` Count the number of words
 - `m` Count the number of characters (including multibyte characters
  
-Default: `ccwc [FILE]`
+Default: `file_stats [FILE]`
 
 ## Features
 
