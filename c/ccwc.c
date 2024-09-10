@@ -8,96 +8,102 @@
  * Return: 0 Upon Success
  *         1 Upon Failure
  */
+int main(int argc, char *argv[]) {
+    FILE *file = NULL;
 
-int main(int argc, char *argv[])
-{
-        if (argc < 2 || argc > 3)
-        {       
-                print_usage(argv[0]);
-                return 1;
+    // Print the number of arguments received
+    printf("Number of arguments: %d\n", argc);
+
+    // Check for correct number of arguments
+    if (argc < 2 || argc > 3) {
+        print_usage(argv[0]);
+        return 1;
+    }
+
+    // Open file or read from stdin
+    file = fopen(argv[argc - 1], "rb"); // Open in binary mode
+    if (file == NULL) {
+        fprintf(stderr, "Error opening file: %s\n", strerror(errno)); // Improved error message
+        return 1;
+    }
+
+    // Flags for counting
+    int count_bytes_flag = 1; // Default to counting bytes
+    int count_lines_flag = 1; // Default to counting lines
+    int count_words_flag = 1; // Default to counting words
+    int count_characters_flag = 1; // Default to counting characters
+
+    // Check for flags
+    if (argc == 3) {
+        if (strcmp(argv[1], "-c") == 0) {
+            count_lines_flag = 0;
+            count_words_flag = 0;
+            count_characters_flag = 0;
+        } else if (strcmp(argv[1], "-l") == 0) {
+            count_bytes_flag = 0;
+            count_words_flag = 0;
+            count_characters_flag = 0;
+        } else if (strcmp(argv[1], "-w") == 0) {
+            count_bytes_flag = 0;
+            count_lines_flag = 0;
+            count_characters_flag = 0;
+        } else if (strcmp(argv[1], "-m") == 0) {
+            count_bytes_flag = 0;
+            count_lines_flag = 0;
+            count_words_flag = 0;
+        } else {
+            print_usage(argv[0]);
+            fclose(file);
+            return 1; // Invalid flag
         }
+    }
 
-        FILE *file;
-        if (argc == 3)
-        {
-                file = fopen(argv[2], "r");
-                if (file == NULL)
-                {
-                        printf("Cannot open file: %s\n", argv[2]);
-                        return 1;
-                }
-        }
-        else
-        {
-                file = fopen(argv[1], "r");
-                if (file == NULL)
-                {
-                        printf("Cannot open file: %s\n", argv[1]);
-                        return 1;
-                }
-        }
+    // Counting logic
+    long int byte_count = 0;
+    long int character_count = 0;
+    int line_count = 0, word_count = 0;
 
-        int count_bytes_flag = 0;
-        int count_lines_flag = 0;
-        int count_words_flag = 0;
-        int count_characters_flag = 0;
+    // Count bytes
+    if (count_bytes_flag) {
+        byte_count = count_bytes(file);
+        printf("%8ld bytes ", byte_count);
+    }
 
-        if (argc == 2 || (argc == 3 && strcmp(argv[1], "-c") == 0))
-        {
-                count_bytes_flag = 1;
-        }
-        if (argc == 2 || (argc == 3 && strcmp(argv[1], "-m") == 0))
-        {
-                count_characters_flag = 1;
-        }
+    // Reset the file pointer for next counts
+    rewind(file);
 
-        if (argc == 2 || strcmp(argv[1], "-l") == 0)
-                count_lines_flag = 1;
+    // Count characters
+    if (count_characters_flag) {
+        character_count = count_characters(file);
+        printf("%8ld characters ", character_count);
+    }
 
-        if (argc == 2 || strcmp(argv[1], "-w") == 0)
-                count_words_flag = 1;
+    // Reset the file pointer again
+    rewind(file);
 
-        if (count_bytes_flag || count_lines_flag || count_words_flag || count_characters_flag)
-        {
-                long int count = 0;
+    // Count lines
+    if (count_lines_flag) {
+        line_count = count_lines(file);
+        printf("%8d lines ", line_count);
+    }
 
-                if (count_bytes_flag)
-                {
-                        count = count_bytes(file);
-                        printf("%8ld ", count);
-                }
-                if (count_lines_flag)
-                {
-                        count = count_lines(file);
-                        printf("%8ld ", count);
-                }
-                if (count_words_flag)
-                {
-                        count = count_words(file);
-                        printf("%8ld ", count);
-                }
-                if (count_characters_flag)
-                {
-                        count = count_characters(file);
-                        printf("%8ld ", count);
-                }
-                if (argc == 3)
-                        printf("%s\n", argv[2]);
-                else
-                        printf("\n");
-        }
-        else
-        {
-                print_usage(argv[0]);
-        }
+    // Reset the file pointer again
+    rewind(file);
 
-        if (file != NULL && file != stdin) {
-                fclose(file);
-        }
+    // Count words
+    if (count_words_flag) {
+        word_count = count_words(file);
+        printf("%8d words ", word_count);
+    }
 
-        return 0;
+    // Print filename or newline
+    printf("%s\n", argv[argc - 1]);
+
+    // Close file if it was opened
+    fclose(file);
+
+    return 0;
 }
-
 
 /**
  * print_usage - Prints usage information and available options to the console
@@ -105,16 +111,14 @@ int main(int argc, char *argv[])
  *
  * Return: None
  */
-
-void print_usage(char *program_name)
-{
-        printf("Usage: %s [OPTION] [FILE]\n", program_name);
-        printf("Options:\n");
-        printf("	-c	Count the number of bytes\n");
-        printf("	-l	Count the number of lines\n");
-        printf("	-w	Count the number of words\n");
-        printf("	-m	Count the number of characters (including multibyte characters)\n");
-        printf("Default: %s [FILE]\n", program_name);
+void print_usage(char *program_name) {
+    printf("Usage: %s [OPTION] [FILE]\n", program_name);
+    printf("Options:\n");
+    printf("        -c      Count the number of bytes\n");
+    printf("        -l      Count the number of lines\n");
+    printf("        -w      Count the number of words\n");
+    printf("        -m      Count the number of characters (including multibyte characters)\n");
+    printf("Default: %s [FILE]\n", program_name);
 }
 
 /**
@@ -123,14 +127,26 @@ void print_usage(char *program_name)
  *
  * Return: Number of bytes in a file
  */
+long int count_bytes(FILE *file) {
+    if (file == NULL) {
+        fprintf(stderr, "File pointer is NULL.\n");
+        return -1;
+    }
 
-long int count_bytes(FILE *file)
-{
-        long int count = 0;
-        fseek(file, 0, SEEK_END);
-        count = ftell(file);
-        fseek(file, 0, SEEK_SET);
-        return count;
+    // Attempt to seek to the end of the file
+    if (fseek(file, 0, SEEK_END) != 0) {
+        fprintf(stderr, "Error seeking to end of file: %s\n", strerror(errno));
+        return -1;
+    }
+
+    long int count = ftell(file); // Get the byte count
+
+    if (count == -1) {
+        perror("Error getting file size");
+    }
+
+    fseek(file, 0, SEEK_SET); // Reset pointer to start
+    return count >= 0 ? count : -1; // Return count or -1 on error
 }
 
 /**
@@ -139,17 +155,20 @@ long int count_bytes(FILE *file)
  *
  * Return: Number of lines in a file
  */
+int count_lines(FILE *file) {
+    int count = 0;
+    int ch;
 
-int count_lines(FILE *file)
-{
-        int count = 0;
-        int ch;
-        while ((ch = fgetc(file)) != EOF)
-        {
-                if (ch == '\n')
-                        count++;
+    while ((ch = fgetc(file)) != EOF) {
+        if (ch == '\n') {
+            count++;
         }
-        return (count);
+    }
+
+    // If the file does not end with a newline, count the last line
+    if (count > 0 && ch != '\n') count++;
+
+    return count;
 }
 
 /**
@@ -158,24 +177,21 @@ int count_lines(FILE *file)
  *
  * Return: Number of words in a file
  */
+int count_words(FILE *file) {
+    int count = 0;
+    int ch;
+    int in_word = 0;
 
-int count_words(FILE *file)
-{
-        int count = 0;
-        int ch;
-        int in_word = 0;
-        while ((ch = fgetc(file)) != EOF)
-        {
-                if (ch == ' ' || ch == '\n' || ch == '\t')
-                        in_word = 0;
-                else if (!in_word)
-                {
-                        in_word = 1;
-                        count++;
-                }
+    while ((ch = fgetc(file)) != EOF) {
+        if (isspace(ch)) {
+            in_word = 0; // End of a word
+        } else if (!in_word) {
+            in_word = 1; // Start of a new word
+            count++;
         }
+    }
 
-        return (count);
+    return count;
 }
 
 /**
@@ -184,17 +200,14 @@ int count_words(FILE *file)
  *
  * Return: Number of characters in a file
  */
+long int count_characters(FILE *file) {
+    long int count = 0;
+    int ch;
 
-long int count_characters(FILE *file)
-{
-        long int count = 0;
-        int ch;
-        while ((ch = fgetc(file)) != EOF)
-        {
-                if (ch != '\n')
-                        count++;
-        }
-        return (count);
+    while ((ch = fgetc(file)) != EOF) {
+        count++; // Count each character
+    }
+
+    rewind(file); // Reset file pointer
+    return count; // Return character count
 }
-
-
