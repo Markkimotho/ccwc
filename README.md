@@ -1,22 +1,28 @@
-# `wc` unix tool
+# `ccwc` - Custom File Statistics Tool
 
-`wc` is a command-line utility that provides various statistics about a given file. It counts the number of bytes, lines, words, and characters (including multibyte characters) in the specified file.
+`ccwc` is a command-line utility that provides various statistics about a given file, similar to the Unix `wc` tool. It counts the number of bytes, lines, words, and characters (including multibyte characters) in the specified file.
 
 ## Overview
-In this project, I will create a custom File Statistics tool like `wc` called `ccwc`
+
+This project implements a custom File Statistics tool called `ccwc`.
 
 ## Usage
 
-Usage: `ccwc [OPTION] [FILE]`
+```bash
+ccwc [OPTION] [FILE]
+```
 
-Options:
+**Options**:
 
 - `c` Count the number of bytes
 - `l` Count the number of lines
 - `w` Count the number of words
 - `m` Count the number of characters (including multibyte characters
  
-Default: `ccwc [FILE]`
+### Default Usages: 
+```
+ccwc [FILE]
+```
 
 ## Features
 
@@ -30,36 +36,49 @@ Default: `ccwc [FILE]`
 To get started with the File Statistics Counter utility, follow these steps:
 
 1. Clone the repository or download the source code files.
-```
+```bash
 $ git clone https://github.com/Markkimotho/ccwc.git
 $ cd ccwc/
 ```
 
 2. Compile the source code using a C compiler.
-```
+```bash
 $ gcc ccwc.c -o ccwc
 ```
 
-or 
+or use make:
 
-```
+```bash
 $ make
 ```
 
 3. Run the executable file with the desired command-line options and the path to the file you want to analyze.
 
-Example usages:
+**Example usages**:
 
-- To count the number of bytes, lines, and words in a file:
-
-
+- To count the number of bytes in a file:
+```bash
+$ ./ccwc -c myfile.txt
 ```
-$ ./ccwc -c -l -w myfile.txt
+
+- To count the number of lines in a file:
+```bash
+$ ./ccwc -l myfile.txt
+```
+
+- To count the number of words in a file:
+```bash
+$ ./ccwc -w myfile.txt
 ```
 
 - To count the number of characters in a file:
-```
+```bash
 $ ./ccwc -m myfile.txt
+```
+
+- To count the number of bytes, lines, words and characters in a file:
+```bash
+$ ./ccwc myfile.txt
 ```
 
 ## Dependencies

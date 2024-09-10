@@ -9,7 +9,7 @@
             background-color: black;
             color: green;
             font-family: 'Courier New', Courier, monospace;
-            margin: 80px auto;
+            margin: 50px auto;
             max-width: 1000px;
             padding: 20px;
         }
@@ -40,10 +40,12 @@
             margin-top: 20px;
             font-size: 0.8em;
         }
-        img {
-            max-width: 100%;
+        pre {
+            background-color: #003300;
+            padding: 10px;
             border: 1px solid green;
             border-radius: 5px;
+            overflow-x: auto;
         }
     </style>
 </head>
@@ -87,23 +89,23 @@
         <p>Here are examples of running the commands:</p>
         <div>
             <h4>Counting Bytes</h4>
-            <img src="resources/bytes.png" alt="Byte Count Command">
+            <pre><code>$ ./ccwc -c /test.txt<br>342384 bytes test.txt </code></pre>
         </div>
         <div>
             <h4>Counting Lines</h4>
-            <img src="resources/lines.png" alt="Line Count Command">
+            <pre><code>$ ./ccwc -l test.txt<br>7190 lines test.txt </code></pre>
         </div>
         <div>
             <h4>Counting Words</h4>
-            <img src="resources/words.png" alt="Word Count Command">
+            <pre><code>$ ./ccwc -w test.txt<br>58164 words test.txt </code></pre>
         </div>
         <div>
             <h4>Counting Characters</h4>
-            <img src="resources/characters.png" alt="Character Count Command">
+            <pre><code>$ ./ccwc -m test.txt<br>342384 characters test.txt</code></pre>
         </div>
         <div></div>
             <h4>Counting All</h4>
-            <img src="resources/general.png" alt="Character Count Command">
+            <pre><code>$ ./ccwc test.txt<br>342384 bytes   342384 characters     7190 lines    58164 words test.txt</code></pre>
         </div>
     </section>
 
